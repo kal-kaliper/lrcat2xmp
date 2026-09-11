@@ -54,6 +54,18 @@ use its bundled CLI -- nothing is installed system-wide. Since the resulting
 app is built locally rather than downloaded, macOS won't quarantine it, so it
 should launch immediately with no Gatekeeper prompt.
 
+### Pre-built download
+
+A pre-built `lrcat2xmp.app.zip` is attached to each
+[Release](../../releases/latest), if you'd rather not run the build step.
+This app isn't signed or notarized (no Apple Developer account is used for
+this project), so on first launch macOS will block it as being from an
+unidentified developer -- unlike a locally built copy, which isn't
+quarantined. To open it anyway: Control-click (or right-click)
+`lrcat2xmp.app` → **Open** → **Open** in the confirmation dialog. If that
+option isn't offered, go to **System Settings → Privacy & Security** and
+click **Open Anyway** next to the blocked-app notice there.
+
 The GUI always extracts an entire catalog with default sidecar naming; use
 `lrcat2xmp.py` directly from the command line for `--root` subsets,
 `--no-ext` naming, `--dry-run` previews, or writing sidecars in place.
