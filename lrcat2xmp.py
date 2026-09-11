@@ -150,6 +150,8 @@ def extract(catalog_path, output_dir, folder_ids=None, include_ext=True, dry_run
     skipped_collision = []
     skipped_no_file_record = 0
     written_paths = {}  # normalized destination -> report_key of the row that claimed it this run
+    processed = 0
+    PROGRESS_INTERVAL = 250  # rows between progress lines, for long-running extracts
 
     with closing(connect_readonly(catalog_path)) as conn:
         query = QUERY
@@ -165,6 +167,11 @@ def extract(catalog_path, output_dir, folder_ids=None, include_ext=True, dry_run
         query += " ORDER BY AgLibraryFolder.pathFromRoot, AgLibraryFile.baseName"
 
         for root_name, path_from_root, base_name, extension, xmp_blob in conn.execute(query, params):
+            processed += 1
+            if processed % PROGRESS_INTERVAL == 0:
+                verb = "checked" if dry_run else "written"
+                print(f"...{processed} processed, {written} {verb}", flush=True)
+
             if not base_name:
                 # Adobe_images row with no matching AgLibraryFile (orphaned catalog entry).
                 skipped_no_file_record += 1

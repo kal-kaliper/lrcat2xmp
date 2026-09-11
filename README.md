@@ -34,6 +34,30 @@ curves) are not guaranteed to translate 1:1 between applications.
 
 Python 3.8+, standard library only. No install step.
 
+## GUI: drag-and-drop app
+
+For a no-terminal option, `gui/build_app.sh` builds `lrcat2xmp.app`, a small
+macOS app you drop a `.lrcat` catalog onto. It extracts sidecars into a new
+sibling folder named `<catalog name> XMP` (never in place, so it can't
+collide with real photos or land in the wrong location) and streams progress
+live in the app window.
+
+```bash
+cd gui
+./build_app.sh      # builds lrcat2xmp.app in this folder
+```
+
+The build uses [Platypus](https://sveinbjorn.org/platypus) (MIT-licensed) to
+wrap `droplet.sh`, which calls `lrcat2xmp.py`. If the `platypus` command-line
+tool isn't already installed, the script downloads Platypus temporarily to
+use its bundled CLI -- nothing is installed system-wide. Since the resulting
+app is built locally rather than downloaded, macOS won't quarantine it, so it
+should launch immediately with no Gatekeeper prompt.
+
+The GUI always extracts an entire catalog with default sidecar naming; use
+`lrcat2xmp.py` directly from the command line for `--root` subsets,
+`--no-ext` naming, `--dry-run` previews, or writing sidecars in place.
+
 ## Usage
 
 ```bash
